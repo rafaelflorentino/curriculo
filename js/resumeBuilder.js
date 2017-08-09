@@ -683,5 +683,178 @@ $("#mapDiv").append(googleMap);
 $("#map").append('<iframe src="https://www.google.com/maps/embed?pb=!1m10!1m8!1m3!1d86870.43339103698!2d-47.929016658052866!3d-15.795144158943788!3m2!1i1024!2i768!4f13.1!5e0!3m2!1spt-BR!2sbr!4v1502209421274" width="100%" height="100%" frameborder="0" style="border:0" allowfullscreen></iframe>');	
 
 
+/* função Json */
 
+
+
+psinsights = {
+ "kind": "pagespeedonline#result",
+ "id": "/speed/pagespeed",
+ "responseCode": 200,
+ "title": "PageSpeed Home",
+ "score": 90,
+ "pageStats": {
+  "numberResources": 22,
+  "numberHosts": 7,
+  "totalRequestBytes": "2761",
+  "numberStaticResources": 16,
+  "htmlResponseBytes": "91981",
+  "cssResponseBytes": "37728",
+  "imageResponseBytes": "13909",
+  "javascriptResponseBytes": "247214",
+  "otherResponseBytes": "8804",
+  "numberJsResources": 6,
+  "numberCssResources": 2
+ },
+ "formattedResults": {
+  "locale": "en_US",
+  "ruleResults": {
+    "AvoidBadRequests": {
+      "localizedRuleName": "Avoid bad requests",
+      "ruleImpact": 0.0
+    },
+    "MinifyJavaScript": {
+      "localizedRuleName": "Minify JavaScript",
+      "ruleImpact": 0.1417,
+      "urlBlocks": [
+      {
+        "header": {
+       "format": "Minifying the following JavaScript resources could reduce their size by $1 ($2% reduction).",
+       "args": [
+        {
+         "type": "BYTES",
+         "value": "1.3KiB"
+        },
+        {
+         "type": "INT_LITERAL",
+         "value": "0"
+        }
+       ]
+        },
+        "urls": [
+        {
+          "result": {
+         "format": "Minifying $1 could save $2 ($3% reduction).",
+         "args": [
+          {
+           "type": "URL",
+           "value": "http://code.google.com/js/codesite_tail.pack.04102009.js"
+          },
+          {
+           "type": "BYTES",
+           "value": "717B"
+          },
+          {
+           "type": "INT_LITERAL",
+           "value": "1"
+          }
+         ]
+        }
+       },
+       {
+        "result": {
+         "format": "Minifying $1 could save $2 ($3% reduction).",
+         "args": [
+          {
+           "type": "URL",
+           "value": "http://www.gmodules.com/ig/proxy?url\u003dhttp%3A%2F%2Fjqueryjs.googlecode.com%2Ffiles%2Fjquery-1.2.6.min.js"
+          },
+          {
+           "type": "BYTES",
+           "value": "258B"
+          },
+          {
+           "type": "INT_LITERAL",
+           "value": "0"
+          }
+         ]
+        }
+       }
+      ]
+     }
+    ]
+   },
+   "SpriteImages": {
+    "localizedRuleName": "Combine images into CSS sprites",
+    "ruleImpact": 0.0
+   }
+  }
+ },
+ "version": {
+  "major": 1,
+  "minor": 11
+ }
+};
+// -------------- funções corretas ----------------------------------
+
+// Iterate through the localizedRuleNames in ruleResults and 
+// return an array of their strings.
+function ruleList(results) {
+    // Your code goes here!
+    var resultArray = [];
+    var rR = results.formattedResults.ruleResults;
+    for (var key in rR)
+        if (rR.hasOwnProperty(key))
+            resultArray.push(rR[key].localizedRuleName);
+    return resultArray;
+}
+
+// Iterate through pageStats in the psiResults object and 
+// return the total number of bytes to load the website.
+function totalBytes(results) {
+    // Your code goes here!
+    var sum = 0;
+    var pS = results.pageStats;
+    for (var key in pS)
+        if (pS.hasOwnProperty(key) && key.indexOf("Bytes") !== -1)
+            sum += Number(pS[key]);
+    return sum;
+}
+
+//console.log("Correta: "+ruleList(psinsights));
+//console.log("Correta: "+totalBytes(psinsights));
+
+// ----------------------------------------------------------------
+
+// Iterate through the localizedRuleNames in ruleResults and 
+// return an array of their strings.
+function ruleList2(results) {
+var log = [];
+	//console.log(results.formattedResults.ruleResults.AvoidBadRequests.localizedRuleName);
+       for(var name in results.formattedResults.ruleResults){   		
+    			//console.log(results.formattedResults.ruleResults[name]);
+			for(var name2 in results.formattedResults.ruleResults[name]){
+				//console.log(results.formattedResults.ruleResults[name][name2]);
+				//log.push(results.formattedResults.ruleResults[name][name2]);
+				if(name2 == "localizedRuleName" ){
+					//console.log(name2);
+					log.push(results.formattedResults.ruleResults[name][name2]);
+				}
+			}
+    }
+    //console.log(log);
+    return log;
+}
+
+
+function totalBytes2(results) {
+	var soma =0;
+
+    for(page in results.pageStats){
+    	//console.log("soma: "+soma);  
+
+	if(page.indexOf("Bytes") !== -1){// verifica na array se encontra o primeiro bytes, se sim retorna -1
+		soma += Number(results.pageStats[page]);
+    	//console.log("valor: "+results.pageStats[page]);	
+	}
+
+
+    }
+
+    return soma;
+}
+
+//console.log("");
+//console.log("Minha: "+ruleList2(psinsights));
+//console.log("Minha: "+totalBytes2(psinsights));
 
